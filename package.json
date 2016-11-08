@@ -1,0 +1,29 @@
+{
+  "name": "euchre-ui",
+  "version": "1.0.0",
+  "description": "Awesome Euchre Dashboard",
+  "main": "app.js",
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-ui-router": "^0.3.1",
+    "bootstrap": "^3.3.7",
+    "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "socket.io": "^1.4.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giocodes/euchre-ui.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/giocodes/euchre-ui/issues"
+  },
+  "homepage": "https://github.com/giocodes/euchre-ui#readme"
+}

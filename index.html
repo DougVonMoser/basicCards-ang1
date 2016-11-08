@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Euchre Helper</title>
+    <link crossorigin="anonymous" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"></link>
+    <link href="css/style.css" rel="stylesheet"></link>
+    <script src="./node_modules/angular/angular.js"></script>
+    <script src="./node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+
+    <script src="./app.js"></script>
+    <script src="./trump/Trump.controller.js"></script>
+    <script src="./scoreboard/Scoreboard.controller.js"></script>
+    <script src="./scoreboard/Scoreboard.factory.js"></script>
+    <script src="./scoreboard/teamScore.directive.js"></script>
+    <script src="./trump/suitState.js"></script>
+    <script src="./table/table.states.js"></script>
+    <script src="./table/table.directive.js"></script>
+
+</head>
+
+<body>
+    <!-- WRAPER -->
+    <section class="container-fluid" ng-app="Euchre">
+        <ui-view></ui-view>
+    </section>
+  
+    <!-- SCRIPTS -->
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./client.js"></script>
+
+</body>
+
+</html>
