@@ -1,9 +1,15 @@
-app.factory('PlayerFactory', function('httpProvider'){
+app.factory('PlayerFactory', function($http) {
 
-	var playerObj = {
-		getHand: function(){
-			$http.get('/')
-		}
-	}
-	return playerObj;
+
+    var playerObj = {
+        getHand: function() {
+            return $http.get('/api/')
+                .then(res => res.data)
+        },
+        playCard: function(player, card) {
+            $http.post('/api/', { player, card })
+                .then(res => res.data)
+        }
+    }
+    return playerObj;
 })

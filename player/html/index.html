@@ -1,1 +1,9 @@
-<h1> testing </h1>
+<h1>Player {{player}}</h1>
+<button ng-show="hand.length <= 0" ng-click="getHand()">RESET</button>
+<div class="col-sm-12">
+    <button ng-repeat="card in hand" ng-click="playCard(card)"> {{card.value}} {{card.suit}} </button>
+</div>
+<div class="col-sm-12">
+    <button ng-click="orderUp()">ORDER UP</button>
+    <button ng-click="pass()">PASS</button>
+</div>
