@@ -1,7 +1,6 @@
 app.config(function($stateProvider) {
     $stateProvider
-        .state('player', {
-            url: '/player',
+        .state('establish.player', {
             templateUrl: '/player/html/index.html',
             controller: 'PlayerCtrl'
         })

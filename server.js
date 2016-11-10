@@ -1,5 +1,4 @@
 'use strict'
-
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -9,26 +8,39 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use('/api', require('./server/index'))
-
+// app.use('/api', require('./server/index'))
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 })
-
 app.use(express.static(__dirname));
 
-io.on('connection', function(socket) {
-    console.log(socket.id);
-    socket.emit('pregame')
+//socket and game logic below - - - - - - - - - - - - - - - - -
 
-    socket.on('trump', function(suit) {
-        console.log('server recieved: ' + suit);
-        socket.broadcast.emit('centerConsole', suit)
+let NewHands = require('./server/utilities/newHands')
+let newHands;
+let Flow = require('./server/utilities/flow')
+
+let openPlayerSlots = [1, 2, 3, 4];
+let flow = new Flow();
+
+io.on('connection', function(socket) {
+    socket.emit('pickAChair', openPlayerSlots)
+
+    socket.on('satDown', function(chair) {
+        console.log('satDown')
+        openPlayerSlots.splice(openPlayerSlots.indexOf(chair), 1)
+        socket.broadcast.emit('pickAChair', openPlayerSlots)
     })
 
-    socket.on('newScore', function(scoreObj) {
-        socket.broadcast.emit('centerConsole', '')
-        socket.broadcast.emit('newScore', scoreObj)
+    socket.on('established', function() {
+        console.log('established')
+        io.sockets.emit('youreTheDealer', flow.nextDealer())
+    })
+
+    socket.on('deal', function() {
+        console.log('heard the command to deal')
+        newHands = new NewHands();
+        io.sockets.emit('goToPregame', newHands)
     })
 
     socket.on('disconnect', function() {

@@ -1,7 +1,6 @@
 app.config(function($stateProvider) {
     $stateProvider
-        .state('player.pregame', {
-            url: '/pregame',
+        .state('establish.player.pregame', {
             templateUrl: '/pregame/html/index.html',
             controller: 'PregameCtrl'
         })
