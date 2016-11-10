@@ -21,26 +21,30 @@ let newHands;
 let Flow = require('./server/utilities/flow')
 
 let openPlayerSlots = [1, 2, 3, 4];
-let flow = new Flow();
+let dealer = new Flow();
+let turn = new Flow();
 
 io.on('connection', function(socket) {
     socket.emit('pickAChair', openPlayerSlots)
 
     socket.on('satDown', function(chair) {
-        console.log('satDown')
         openPlayerSlots.splice(openPlayerSlots.indexOf(chair), 1)
         socket.broadcast.emit('pickAChair', openPlayerSlots)
     })
 
     socket.on('established', function() {
-        console.log('established')
-        io.sockets.emit('youreTheDealer', flow.nextDealer())
+        let currentDealer = dealer.next()
+        turn.setAfter(currentDealer)
+        io.sockets.emit('youreTheDealer', currentDealer)
     })
 
     socket.on('deal', function() {
-        console.log('heard the command to deal')
         newHands = new NewHands();
         io.sockets.emit('goToPregame', newHands)
+        io.sockets.emit('yourTurn', {
+            turn: turn.current,
+            todo: 'orderOrPass'
+        })
     })
 
     socket.on('disconnect', function() {

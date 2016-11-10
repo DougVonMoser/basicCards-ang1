@@ -1,20 +1,19 @@
 class Flow {
     constructor() {
         this.bucket = [1, 2, 3, 4];
-        this.currentDealer = undefined;
-        this.currentTurn = undefined;
+        this.current = 0;
     }
-    nextDealer() {
-        if (this.currentDealer === this.bucket.length || !this.currentDealer) {
-            this.currentDealer = 0;
+    next() {
+        if (this.current === this.bucket.length) {
+            this.current = 0;
         }
-        return this.bucket[this.currentDealer++]
+        return this.bucket[this.current++]
     }
-    nextTurn() {
-        if (this.currentTurn === this.bucket.length || !this.currentTurn) {
-            this.currentTurn = 0;
+    setAfter(player) {
+        if (player === 4) {
+            player = 0;
         }
-        return this.bucket[this.currentTurn++]
+        this.current = player++
     }
 }
 

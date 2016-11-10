@@ -34,4 +34,12 @@ app.controller('EstablishCtrl', function($state, $scope, $rootScope, PlayerFacto
         console.log('got the command to go to pregame')
         $state.go('establish.player.pregame')
     })
+
+    socket.on('yourTurn', function(turnObj) {
+        console.log('received whos turn it is')
+        if (turnObj.turn === $scope.player) {
+            console.log('my turn yayayyy!!!')
+            $scope.myTurn = true;
+        }
+    })
 });
