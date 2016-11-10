@@ -18,7 +18,8 @@ app.get('/', function(req, res) {
 app.use(express.static(__dirname));
 
 io.on('connection', function(socket) {
-    console.log('a user connected');
+    console.log(socket.id);
+    socket.emit('pregame')
 
     socket.on('trump', function(suit) {
         console.log('server recieved: ' + suit);

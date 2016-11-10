@@ -1,4 +1,8 @@
-app.controller('PlayerCtrl', function($scope, $rootScope, PlayerFactory) {
+app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory) {
+    socket.on('pregame', function() {
+        $state.go('player.pregame')
+    })
+
     function removeCardFromHand(card) {
         $scope.hand.splice($scope.hand.indexOf(card), 1)
     }
@@ -9,9 +13,10 @@ app.controller('PlayerCtrl', function($scope, $rootScope, PlayerFactory) {
         PlayerFactory.getHand()
             .then(response => {
                 $scope.hand = response.hand;
-                if(!$scope.player){
+                if (!$scope.player) {
                     $scope.player = response.player;
                 }
+                // $state.go('player.pregame')
             })
     }
     $scope.playCard = function(card) {
@@ -19,4 +24,5 @@ app.controller('PlayerCtrl', function($scope, $rootScope, PlayerFactory) {
         PlayerFactory.playCard($scope.player, card)
     }
     $scope.getHand()
+
 });

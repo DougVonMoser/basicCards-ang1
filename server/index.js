@@ -1,5 +1,5 @@
 let router = require('express').Router();
-let Euchre24 = require('./card')
+let Euchre24 = require('../card')
 
 let player = 1;
 let cardsReceivedCount = 0;
