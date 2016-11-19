@@ -1,4 +1,3 @@
-'use strict'
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -16,13 +15,19 @@ app.use(express.static(__dirname));
 
 //socket and game logic below - - - - - - - - - - - - - - - - -
 
+let findOtherSuits = require('./server/utilities/findOtherSuits')
 let NewHands = require('./server/utilities/newHands')
 let newHands;
+let possibleSuits;
 let Flow = require('./server/utilities/flow')
 
 let openPlayerSlots = [1, 2, 3, 4];
 let dealer = new Flow();
 let turn = new Flow();
+let selectTrump = false;
+let currentTrump;
+
+
 
 io.on('connection', function(socket) {
     socket.emit('pickAChair', openPlayerSlots)
@@ -46,6 +51,32 @@ io.on('connection', function(socket) {
             todo: 'orderOrPass'
         })
     })
+
+    socket.on('pass', function() {
+        let newTurn = turn.next();
+        if(newTurn === Flow.getAfter(dealer.current)){
+            io.sockets.emit('clearTable')
+            selectTrump = true;
+            possibleSuits = findOtherSuits(newHands.turnOver[0].suit)
+        }
+        io.sockets.emit('yourTurn', {
+            turn: newTurn,
+            selectTrump, 
+            possibleSuits
+        })
+    })
+    socket.on('orderUp', function(suit){
+        if(suit){
+            currentTrump = suit;
+        } else {
+            currentTrump = newHands.turnOver[0].suit;
+        }
+    })  
+
+
+
+
+
 
     socket.on('disconnect', function() {
         console.log('user disconnected');

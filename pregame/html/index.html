@@ -1,4 +1,9 @@
-<div ng-show="myTurn" class="col-sm-12">
+<div ng-show="myTurn && !selectTrump" class="col-sm-12">
     <button ng-click="orderUp()">ORDER UP</button>
+    <button ng-click="pass()">PASS</button>
+</div>
+
+<div ng-show="myTurn && selectTrump" class="col-sm-12">
+    <button ng-repeat="suit in possibleSuits" ng-click="orderUp(suit)">{{ suit }}</button>
     <button ng-click="pass()">PASS</button>
 </div>

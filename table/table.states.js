@@ -3,5 +3,6 @@ app.config(function($stateProvider) {
         .state('table', {
             url: '/table',
             templateUrl: '/table/html/index.html',
+            controller: 'TableCtrl'
         })
 })
