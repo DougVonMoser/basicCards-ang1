@@ -1,4 +1,5 @@
 <h1 ng-show="player" id="player">Player {{player}}</h1>
+<h1 ng-show="myTurn" id="player">MY TURN</h1>
 <h1 ng-hide="player">Take a seat homie</h1>
 <button ng-repeat="chair in chairs" ng-hide="player" ng-click="sitIn(chair)">{{chair}}</button>
 <div ng-hide="hand">

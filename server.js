@@ -15,17 +15,18 @@ app.use(express.static(__dirname));
 
 //socket and game logic below - - - - - - - - - - - - - - - - -
 
-let findOtherSuits = require('./server/utilities/findOtherSuits')
-let NewHands = require('./server/utilities/newHands')
+const findOtherSuits = require('./server/utilities/findOtherSuits')
+const NewHands = require('./server/utilities/newHands')
 let newHands;
 let possibleSuits;
-let Flow = require('./server/utilities/flow')
+const Flow = require('./server/utilities/flow')
+const Game = require('./server/utilities/game')
 
 let openPlayerSlots = [1, 2, 3, 4];
 let dealer = new Flow();
 let turn = new Flow();
 let selectTrump = false;
-let currentTrump;
+const game = new Game()
 
 
 
@@ -62,21 +63,41 @@ io.on('connection', function(socket) {
         io.sockets.emit('yourTurn', {
             turn: newTurn,
             selectTrump, 
-            possibleSuits
+            possibleSuits, 
+
         })
     })
     socket.on('orderUp', function(suit){
+        let currentTrump;
         if(suit){
             currentTrump = suit;
         } else {
             currentTrump = newHands.turnOver[0].suit;
         }
+        //set player after dealer to their turn
+        game.setTrump(currentTrump)
+        let firstTurn = turn.setAfter(dealer.current)
+        io.sockets.emit('yourTurn', {
+            turn: firstTurn, 
+            gamePlay: true
+        })
+
     })  
-
-
-
-
-
+    socket.on('cardPlayed', function(play){
+        let nextTurn;
+        let thatWasTheFourthCard = game.played(play)
+        if(thatWasTheFourthCard){
+            console.log('thatWasTheFourthCard')
+            nextTurn = turn.set(game.getWinner())
+        } else {
+            nextTurn = turn.next()
+        }
+        console.log('next turn: ', nextTurn)
+        io.sockets.emit('yourTurn', {
+            turn: nextTurn,
+            gamePlay: true
+        })
+    })
 
     socket.on('disconnect', function() {
         console.log('user disconnected');

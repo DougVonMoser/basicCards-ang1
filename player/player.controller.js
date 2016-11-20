@@ -48,11 +48,20 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory)
         } else {
             $scope.myTurn = false;
         }
+        if(turnObj.gamePlay === true){
+            $state.go('player')
+        }
         $scope.$evalAsync()
     })
 
     function removeCardFromHand(card) {
         $scope.hand.splice($scope.hand.indexOf(card), 1)
     }
-
+    $scope.playCard = function(card){
+        if(!$scope.myTurn){
+            return
+        }
+        socket.emit('cardPlayed', {player: $scope.player, card})
+        removeCardFromHand(card)
+    }
 });
