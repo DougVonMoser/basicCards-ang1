@@ -11,7 +11,7 @@ class Euchre24 {
     }
     genDeck() {
         this.bank = [];
-        let values = 'ace 9 10 jack queen king'.split(' ');
+        let values = [9, 10, 11, 12, 13, 14];
         let suits = 'hearts clubs spades diamonds'.split(' ');
         values.forEach(value => {
             suits.forEach(suit => {

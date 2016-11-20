@@ -1,21 +1,4 @@
-function getComplement(suit){
-	switch(suit){
-		case 'hearts':
-			return 'diamonds'
-		case 'diamonds':
-			return 'hearts'
-		case 'spades':
-			return 'clubs'
-		case 'clubs':
-			return 'spades'
-	}
-}
-
-function determineWinner(trump, plays){
-	let winner;
-	
-	return 4
-}
+const determineWinner = require('./determineWinner')
 
 class Game {
 	constructor(){
