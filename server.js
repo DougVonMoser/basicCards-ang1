@@ -13,20 +13,21 @@ app.get('/', function(req, res) {
 })
 app.use(express.static(__dirname));
 
-//socket and game logic below - - - - - - - - - - - - - - - - -
+//socket and game flow below - - - - - - - - - - - - - - - - -
 
 const findOtherSuits = require('./server/utilities/findOtherSuits')
 const NewHands = require('./server/utilities/newHands')
-let newHands;
-let possibleSuits;
 const Flow = require('./server/utilities/flow')
 const Game = require('./server/utilities/game')
 
-let openPlayerSlots = [1, 2, 3, 4];
 let dealer = new Flow();
 let turn = new Flow();
-let selectTrump = false;
 const game = new Game()
+
+let openPlayerSlots = [1, 2, 3, 4];
+let selectTrump = false;
+let newHands;
+let possibleSuits;
 
 
 
@@ -48,7 +49,7 @@ io.on('connection', function(socket) {
         newHands = new NewHands();
         io.sockets.emit('goToPregame', newHands)
         io.sockets.emit('yourTurn', {
-            turn: turn.current,
+            turn: turn.setAfter(dealer.current),
             todo: 'orderOrPass'
         })
     })
@@ -87,16 +88,19 @@ io.on('connection', function(socket) {
         let nextTurn;
         let thatWasTheFourthCard = game.played(play)
         if(thatWasTheFourthCard){
-            console.log('thatWasTheFourthCard')
             nextTurn = turn.set(game.getWinner())
         } else {
             nextTurn = turn.next()
         }
-        console.log('next turn: ', nextTurn)
-        io.sockets.emit('yourTurn', {
-            turn: nextTurn,
-            gamePlay: true
-        })
+        if(game.gamesCompleted < 5){
+            io.sockets.emit('yourTurn', {
+                turn: nextTurn,
+                gamePlay: true
+            })
+        } else {
+            game.resetGamesCompleted()
+            io.sockets.emit('youreTheDealer', dealer.next())
+        }
     })
 
     socket.on('disconnect', function() {

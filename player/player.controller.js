@@ -4,6 +4,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory)
     $scope.dealer;
     $scope.established;
     $scope.turnOver;
+    $scope.gamePlay;
     socket.on('pickAChair', function(chairs) {
         $scope.chairs = chairs;
         $scope.$evalAsync()
@@ -21,6 +22,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory)
     }
     socket.on('youreTheDealer', function(dealer) {
         console.log('youreTheDealer', dealer)
+        $scope.gamePlay = false;
         if ($scope.player === dealer) {
             $scope.dealer = true;
         }
@@ -49,6 +51,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory)
             $scope.myTurn = false;
         }
         if(turnObj.gamePlay === true){
+            $scope.gamePlay = true;
             $state.go('player')
         }
         $scope.$evalAsync()
@@ -58,6 +61,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory)
         $scope.hand.splice($scope.hand.indexOf(card), 1)
     }
     $scope.playCard = function(card){
+        $scope.dealer = false;
         if(!$scope.myTurn){
             return
         }

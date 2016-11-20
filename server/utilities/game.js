@@ -5,6 +5,7 @@ class Game {
 		this.plays = []
 		this.trump;
 		this.winner;
+		this.gamesCompleted = 0
 	}
 	setTrump(suit){
 		this.trump = suit;
@@ -16,16 +17,16 @@ class Game {
 		} else {
 			console.log('this.plays has a length of 4')
 			this.winner = determineWinner(this.trump, this.plays);
-			this.clearTable()
+			this.plays = [];
+			this.gamesCompleted++;
 			return true
 		}
 	}
 	getWinner(){
-		console.log('getWinner was called and returning', this.winner)
 		return this.winner
 	}
-	clearTable(){
-		this.plays = []
+	resetGamesCompleted(){
+		this.gamesCompleted = 0;
 	}
 }
 

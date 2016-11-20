@@ -1,14 +1,13 @@
 <h1 ng-show="player" id="player">Player {{player}}</h1>
 <h1 ng-show="myTurn" id="player">MY TURN</h1>
+
 <h1 ng-hide="player">Take a seat homie</h1>
 <button ng-repeat="chair in chairs" ng-hide="player" ng-click="sitIn(chair)">{{chair}}</button>
-<div ng-hide="hand">
-    <button ng-show="dealer" ng-click="deal()">DEAL!</button>
 
-</div>
-
+<button ng-show="dealer && !hand.length" ng-click="deal()">DEAL!</button>
 
 <div class="col-sm-12">
-    <button ng-repeat="card in hand" ng-click="playCard(card)"> {{card.value}} {{card.suit}} </button>
+    <button ng-repeat="card in hand" ng-click="playCard(card)" ng-disabled="!gamePlay"> {{card.value}} {{card.suit}} </button>
 </div>
+
 <ui-view></ui-view>
