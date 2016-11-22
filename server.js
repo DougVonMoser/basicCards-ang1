@@ -68,6 +68,7 @@ io.on('connection', function(socket) {
 
         })
     })
+
     socket.on('orderUp', function(suit){
         let currentTrump;
         if(suit){
@@ -77,16 +78,18 @@ io.on('connection', function(socket) {
         }
         //set player after dealer to their turn
         game.setTrump(currentTrump)
+        io.sockets.emit('table-setTrump', currentTrump)
         let firstTurn = turn.setAfter(dealer.current)
         io.sockets.emit('yourTurn', {
             turn: firstTurn, 
             gamePlay: true
         })
+    })
 
-    })  
     socket.on('cardPlayed', function(play){
         let nextTurn;
         let thatWasTheFourthCard = game.played(play)
+        io.sockets.emit('table-cardPlayed', game.getState())
         if(thatWasTheFourthCard){
             nextTurn = turn.set(game.getWinner())
         } else {
