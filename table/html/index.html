@@ -1,8 +1,11 @@
 <h1>Table View</h1>
 
 
-<h1 ng-hide="!trumpSelected" ng-repeat="play in state.plays"> Player {{play.player}} played a {{play.card}}</h1>
+<h1 ng-hide="!trumpSelected" ng-repeat="play in state.plays"> Player {{play.player}} played <card card="play.card"></card></h1>
+
+
 
 <h1 ng-hide="trumpSelected">{{turnOver.value}} {{turnOver.suit}}</h1>
 
 <h1 ng-show="trumpSelected">{{ trump }}</h1>
+
