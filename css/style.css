@@ -34,3 +34,7 @@ button {
     bottom: 0;
     right: 0;
 }
+
+.enabled {
+    border: 5px solid black;
+}

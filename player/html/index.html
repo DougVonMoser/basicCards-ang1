@@ -7,7 +7,11 @@
 <button ng-show="dealer && !hand.length" ng-click="deal()">DEAL!</button>
 
 <div class="col-sm-12">
-    <button ng-repeat="card in hand" ng-click="playCard(card)" ng-disabled="!gamePlay"> {{card.value}} {{card.suit}} </button>
+    <button ng-repeat="card in hand"
+    		ng-click="playCard(card)"
+    		ng-disabled="!gamePlay || !myTurn || card.disabled"
+    		ng-class="{enabled: !card.disabled && myTurn && gamePlay}"
+   	> {{card.value}} {{card.suit}} </button>
 </div>
 
 <ui-view></ui-view>

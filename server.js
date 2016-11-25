@@ -65,6 +65,7 @@ io.on('connection', function(socket) {
             turn: newTurn,
             selectTrump, 
             possibleSuits, 
+            state: game.getState()
 
         })
     })
@@ -82,7 +83,8 @@ io.on('connection', function(socket) {
         let firstTurn = turn.setAfter(dealer.current)
         io.sockets.emit('yourTurn', {
             turn: firstTurn, 
-            gamePlay: true
+            gamePlay: true,
+            state: game.getState()
         })
     })
 
@@ -92,13 +94,16 @@ io.on('connection', function(socket) {
         io.sockets.emit('table-cardPlayed', game.getState())
         if(thatWasTheFourthCard){
             nextTurn = turn.set(game.getWinner())
+            game.clearPlays();
         } else {
-            nextTurn = turn.next()
+            nextTurn = turn.next();
         }
         if(game.gamesCompleted < 5){
+            console.log(game.getState())
             io.sockets.emit('yourTurn', {
                 turn: nextTurn,
-                gamePlay: true
+                gamePlay: true,
+                state: game.getState()
             })
         } else {
             game.resetGamesCompleted()
