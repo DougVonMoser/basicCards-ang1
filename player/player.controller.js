@@ -1,4 +1,4 @@
-app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory) {
+app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory) {
 
     $scope.chairs;
     $scope.player;
@@ -43,9 +43,10 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory)
         }
     })
 
-    socket.on('yourTurn', function(turnObj) {
-                console.log(turnObj.state)
+    
 
+    socket.on('yourTurn', function(turnObj) {
+        console.log(turnObj.state)
         if (turnObj.turn === $scope.player) {
             $scope.myTurn = true;
             if(turnObj.selectTrump){
@@ -59,33 +60,39 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, PlayerFactory)
             $scope.gamePlay = true;
             $state.go('player')
         }
-        let leadSuit;
         if($scope.gamePlay){
+        let leadSuit;
             // if there is a lead card played on the table
             if(turnObj.state.plays.length > 0 && $scope.myTurn){
-                leadSuit = turnObj.state.plays[0].card.suit;
+                leadSuit = playerFactory.getLeadSuit(turnObj.state);
                 $scope.restricted = $scope.hand.some(card => {
-                    if(card.suit === leadSuit){
+                let isLeftBower = playerFactory.isLeftBower(card, turnObj.state.trump);
+                    if((card.suit === leadSuit && !isLeftBower ) || (leadSuit === turnObj.state.trump && isLeftBower)){
                         return true
                     }
                 })
-                console.log('are you restricted? ', $scope.restricted)
+                console.log("restricted? ", $scope.restricted)
                 if($scope.restricted){
+                    // i want to do stuff if the card isnt of the lead unless trump led and card is jack
                     $scope.hand.forEach(card => {
-                        if(card.suit !== leadSuit){
-                            card.disabled = true;
+                    let isLeftBower = playerFactory.isLeftBower(card, turnObj.state.trump);
+                    console.log("leftBower?", isLeftBower)
+                        if((card.suit === leadSuit && !isLeftBower ) || (leadSuit === turnObj.state.trump && isLeftBower)){
+                            card.enabled = true;
+                        } else {
+                            card.enabled = false;
                         }
                     })
                 } else {
-                    console.log('all disables are cleared')
-                    $scope.hand.forEach(card => {card.disabled = false})
+                    console.log('all cards enabled')
+                    $scope.hand.forEach(card => {card.enalbed = true})
                 }
 
             } else {
                 // there is not a lead card on the table
                 console.log('lead card about to be played')
                 $scope.restricted = false;
-                $scope.hand.forEach(card => {card.disabled = false})
+                $scope.hand.forEach(card => {card.enabled = true})
             }
         }
         $scope.$evalAsync()

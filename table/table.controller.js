@@ -1,4 +1,4 @@
-app.controller('TableCtrl', function($scope, $rootScope, PlayerFactory) {
+app.controller('TableCtrl', function($scope, $rootScope, playerFactory) {
 
     socket.on('goToPregame', function(newHands) {
     	$scope.state = undefined
