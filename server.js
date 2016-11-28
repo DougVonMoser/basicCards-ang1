@@ -71,6 +71,11 @@ io.on('connection', function(socket) {
     })
 
     socket.on('orderUp', function(suit){
+        // if not suit, then assume a card needs to be swapped
+        if(!suit){
+            io.sockets.emit('trumpSwap', newHands.turnover, newHands.turnOver[0].suit);
+            return
+        } 
         let currentTrump;
         if(suit){
             currentTrump = suit;

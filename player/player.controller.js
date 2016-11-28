@@ -7,6 +7,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
     $scope.turnOver;
     $scope.gamePlay;
     $scope.restricted;
+    $scope.trump;
 
     socket.on('pickAChair', function(chairs) {
         $scope.chairs = chairs;
@@ -34,6 +35,20 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
     $scope.deal = function() {
         socket.emit('deal')
     }
+    socket.on('trumpSwap', function(turnOver, trump){
+        if ($scope.player !== $scope.dealer){
+            $scope.myTurn = false
+            return
+        }
+        $scope.myTurn = true
+        $scope.trump = trump
+        $scope.hand.push(turnOver);
+        $scope.hand.forEach(card => {
+            card.enabled = true;
+        })
+        $scope.$evalAsync()
+    })
+
     socket.on('goToPregame', function(hands) {
         $scope.turnOver = hands.turnOver;
         $scope.hand = hands[$scope.player]
@@ -104,7 +119,11 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
     
     $scope.playCard = function(card){
         $scope.dealer = false;
-        socket.emit('cardPlayed', {player: $scope.player, card})
         removeCardFromHand(card)
+        if (!$scope.gameplay){
+            socket.emit('orderUp', $scope.trump)   
+        } else  {
+            socket.emit('cardPlayed', {player: $scope.player, card})
+        }
     }
 });

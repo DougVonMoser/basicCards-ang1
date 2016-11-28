@@ -5,4 +5,8 @@ app.controller('PregameCtrl', function($scope, $rootScope, playerFactory) {
     $scope.pass = function() {
         socket.emit('pass')
     }
+
+    socket.on('trumpSwap', function(){
+    	
+    })
 });
