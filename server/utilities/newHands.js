@@ -11,4 +11,5 @@ class NewHands extends Euchre24 {
     }
 }
 
+
 module.exports = NewHands;

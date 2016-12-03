@@ -1,0 +1,4 @@
+<button ng-click="playCard(cardie, swapped)"
+		ng-disabled="!gamePlay || !myTurn || !cardie.enabled"
+		ng-class="{enabled: cardie.enabled && myTurn && gamePlay}"
+	> {{cardie | cardFormat }} </button>

@@ -2,7 +2,7 @@ app.directive('card', function() {
   return {
     restrict: 'E',
     scope: {
-      card: '='
+      cardie: '='
     },
     link: function(scope, element, attrs, controllers) {
 

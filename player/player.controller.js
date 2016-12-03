@@ -36,12 +36,17 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
         socket.emit('deal')
     }
     socket.on('trumpSwap', function(turnOver, trump){
-        if ($scope.player !== $scope.dealer){
+        console.log('finding dealer', turnOver)
+        $state.go('player')
+        if (!$scope.dealer){
             $scope.myTurn = false
             return
         }
+        console.log('dealer received orders to swap trump')
+        $scope.swapped = true;
         $scope.myTurn = true
-        $scope.trump = trump
+        $scope.gamePlay = true;
+        $scope.trump = trump;
         $scope.hand.push(turnOver);
         $scope.hand.forEach(card => {
             card.enabled = true;
@@ -72,6 +77,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
             $scope.myTurn = false;
         }
         if(turnObj.gamePlay === true){
+            console.log('SETTING scope.gameplay to true')
             $scope.gamePlay = true;
             $state.go('player')
         }
@@ -117,12 +123,17 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
         $scope.hand.splice($scope.hand.indexOf(card), 1)
     }
     
-    $scope.playCard = function(card){
+    $scope.playCard = function(card, swapped){
         $scope.dealer = false;
         removeCardFromHand(card)
-        if (!$scope.gameplay){
+        console.log('$scope.gamePlay is not getting set to true', $scope.gamePlay)
+        console.log('swapped', swapped)
+        if (!$scope.gamePlay || swapped){
+            console.log('im ordering up in a way')
+            $scope.swapped = false;
             socket.emit('orderUp', $scope.trump)   
         } else  {
+            console.log('im playing a card actually')
             socket.emit('cardPlayed', {player: $scope.player, card})
         }
     }

@@ -66,14 +66,13 @@ io.on('connection', function(socket) {
             selectTrump, 
             possibleSuits, 
             state: game.getState()
-
         })
     })
 
     socket.on('orderUp', function(suit){
         // if not suit, then assume a card needs to be swapped
         if(!suit){
-            io.sockets.emit('trumpSwap', newHands.turnover, newHands.turnOver[0].suit);
+            io.sockets.emit('trumpSwap', newHands.turnOver[0], newHands.turnOver[0].suit);
             return
         } 
         let currentTrump;
@@ -86,6 +85,7 @@ io.on('connection', function(socket) {
         game.setTrump(currentTrump)
         io.sockets.emit('table-setTrump', currentTrump)
         let firstTurn = turn.setAfter(dealer.current)
+        console.log('emitting a true gamePlay')
         io.sockets.emit('yourTurn', {
             turn: firstTurn, 
             gamePlay: true,
