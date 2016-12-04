@@ -56,6 +56,35 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
 
     socket.on('goToPregame', function(hands) {
         $scope.turnOver = hands.turnOver;
+
+
+
+        var $container = document.getElementById('container');
+
+        console.log($container)
+        var deck = Deck(hands[$scope.player]);
+
+        let positionIncrement = window.innerWidth / 6;
+        deck.cards.forEach(function (card, i) {
+            card.$el.onclick = $scope.playCard;
+            card.setSide('front')
+            // card.enableDragging() not working anyway
+            // card.enableFlipping()
+            card.animateTo({
+                // delay: 1000 + i * 2, // wait 1 second + i * 2 ms
+                // duration: 500,
+                // ease: 'quartOut',
+                
+                x: -200 + (positionIncrement * i),
+                y: 0
+            })
+        });
+
+        deck.mount($container);
+        deck.sort();
+
+
+
         $scope.hand = hands[$scope.player]
         $scope.established = true;
         if (!$state.is('table')) {

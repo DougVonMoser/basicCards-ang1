@@ -10,12 +10,19 @@
 
 <button ng-show="dealer && !hand.length" ng-click="deal()">DEAL!</button>
 
-<div ng-repeat="card in hand" class="col-xs-2">
+
+<div id="container"></div>
+
+
+
+<!-- <div ng-repeat="card in hand" class="col-xs-2">
     <button ng-click="playCard(card, swapped)"
     		ng-disabled="!gamePlay || !myTurn || !card.enabled"
     		ng-class="{enabled: card.enabled && myTurn && gamePlay}"
    	> {{card | cardFormat }} </button>
-</div>
+</div> -->
+
+
 <div class="col-xs-12">
 	<ui-view></ui-view>
 </div>
