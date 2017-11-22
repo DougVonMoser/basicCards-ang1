@@ -5,12 +5,13 @@ const io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 // app.use('/api', require('./server/index'))
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
-})
+});
+
 app.use(express.static(__dirname));
 
 //socket and game flow below - - - - - - - - - - - - - - - - -
