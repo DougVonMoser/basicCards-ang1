@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -7,7 +8,8 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
-// app.use('/api', require('./server/index'))
+app.use('/static', express.static(path.join(__dirname, './dist/')));
+
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
@@ -33,7 +35,9 @@ let possibleSuits;
 
 
 io.on('connection', function(socket) {
+    console.log('buhneckted')
     socket.emit('pickAChair', openPlayerSlots)
+    socket.emit('fuck', 'something')
 
     socket.on('satDown', function(chair) {
         openPlayerSlots.splice(openPlayerSlots.indexOf(chair), 1)
@@ -64,8 +68,8 @@ io.on('connection', function(socket) {
         }
         io.sockets.emit('yourTurn', {
             turn: newTurn,
-            selectTrump, 
-            possibleSuits, 
+            selectTrump,
+            possibleSuits,
             state: game.getState()
         })
     })
@@ -75,7 +79,7 @@ io.on('connection', function(socket) {
         if(!suit){
             io.sockets.emit('trumpSwap', newHands.turnOver[0], newHands.turnOver[0].suit);
             return
-        } 
+        }
         let currentTrump;
         if(suit){
             currentTrump = suit;
@@ -88,7 +92,7 @@ io.on('connection', function(socket) {
         let firstTurn = turn.setAfter(dealer.current)
         console.log('emitting a true gamePlay')
         io.sockets.emit('yourTurn', {
-            turn: firstTurn, 
+            turn: firstTurn,
             gamePlay: true,
             state: game.getState()
         })
