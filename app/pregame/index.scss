@@ -1,0 +1,15 @@
+.chair-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chair {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid black 2px;
+    width: calc((100% / 4) - 12px);
+    height: 56px;
+    font-size: 44px;
+
+}

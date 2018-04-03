@@ -25,7 +25,7 @@ const Game = require('./server/utilities/game')
 
 let dealer = new Flow();
 let turn = new Flow();
-const game = new Game()
+const game = new Game();
 
 let openPlayerSlots = [1, 2, 3, 4];
 let selectTrump = false;
@@ -40,7 +40,8 @@ io.on('connection', function(socket) {
     socket.emit('fuck', 'something')
 
     socket.on('satDown', function(chair) {
-        openPlayerSlots.splice(openPlayerSlots.indexOf(chair), 1)
+        console.log('satDown:', chair)
+        openPlayerSlots = openPlayerSlots.filter(p => p != chair);
         socket.broadcast.emit('pickAChair', openPlayerSlots)
     })
 
@@ -128,4 +129,5 @@ io.on('connection', function(socket) {
 
 http.listen(3000, function() {
     console.log('listening on *:3000');
+    console.log('http://localhost:3000/');
 });

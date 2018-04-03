@@ -1,0 +1,6 @@
+while(players < 4){
+    Se - pickAChair (all chair events)
+    Cl - satDown
+}
+Cl - established (all butts in chairs)
+

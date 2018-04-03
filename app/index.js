@@ -1,9 +1,16 @@
+import './index.scss';
+import './pregame/index.scss';
 const socket = io();
 
-import './index.scss';
 
-console.log('get me wired up!')
+document.addEventListener("DOMContentLoaded", function(event) {
+    console.log("DOM fully loaded and parsed");
 
-socket.on('fuck', function(){
-    console.log('connect 4')
-})
+    let pregame = require('./pregame');
+    pregame.init(socket);
+
+
+
+});
+
+

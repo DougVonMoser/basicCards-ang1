@@ -11,10 +11,12 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
 
     socket.on('pickAChair', function(chairs) {
         $scope.chairs = chairs;
-        $scope.$evalAsync()
+        $scope.$evalAsync();
+
+        //if im the last person, sit my ass down
         if ($scope.chairs.length === 1 && !$scope.player) {
             $scope.sitIn($scope.chairs[0], true)
-            socket.emit('established')
+            socket.emit('established');
         }
     })
     $scope.sitIn = function(chair, final) {
@@ -63,7 +65,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
         }
     })
 
-    
+
 
     socket.on('yourTurn', function(turnObj) {
         console.log(turnObj.state)
@@ -122,7 +124,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
     function removeCardFromHand(card) {
         $scope.hand.splice($scope.hand.indexOf(card), 1)
     }
-    
+
     $scope.playCard = function(card, swapped){
         $scope.dealer = false;
         removeCardFromHand(card)
@@ -131,7 +133,7 @@ app.controller('PlayerCtrl', function($state, $scope, $rootScope, playerFactory)
         if (!$scope.gamePlay || swapped){
             console.log('im ordering up in a way')
             $scope.swapped = false;
-            socket.emit('orderUp', $scope.trump)   
+            socket.emit('orderUp', $scope.trump)
         } else  {
             console.log('im playing a card actually')
             socket.emit('cardPlayed', {player: $scope.player, card})
